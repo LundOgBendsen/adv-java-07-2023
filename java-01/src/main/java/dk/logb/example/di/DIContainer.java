@@ -42,18 +42,21 @@ public class DIContainer<T> {
 
     /**
      * Recursively initialize beans. New instances are created by calling the default constructor.
-     * @param clazz
+     * @param clazz, the class to be initialized i.e. inject all dependencies into @Autowired fields
      * @return an initialized instance of class clazz
      */
     private Object initialize(Class clazz) {
         try {
 
+            //create a new instance of the class to be initialized
             Object bean =  clazz.newInstance();
+            //iterate fields of the class
             for (java.lang.reflect.Field field : clazz.getDeclaredFields()) {
+                //if field is annotated with @Autowired
                 if (field.isAnnotationPresent(Autowired.class)) {
                     validateField(field);
-                    field.setAccessible(true);
-                    //create new instance of @Autowired field type
+                    field.setAccessible(true); //make private fields accessible
+                    //create new instance of @Autowired field type and inject it into the field
                     field.set(bean, initialize(field.getType()));
                 }
             }
@@ -66,6 +69,7 @@ public class DIContainer<T> {
     }
 
     private void validateField(Field field) {
+        //is field type an interface, i.e. it cannot be instantiated? If so throw exception
         if (field.getType().isInterface()) {
             throw new RuntimeException("Cannot autowire interface " + field.getType().getName());
         }
@@ -96,19 +100,26 @@ public class DIContainer<T> {
     String value() default "";
 }
 
-@Target(ElementType.FIELD)
+/**
+ *  Mandatory Annotation for marking a field as a field that should be injected with an instance of the field type.
+ */
+@Target(value=ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @interface Autowired {
     String value() default "";
 }
 
 
+/**
+ * Example of a bean
+ */
 
 @Bean
 class ABean {
 
     @Autowired
     private BBean bBean = null;
+
 
     public boolean isAllPalindrome(String... strings) {
         for (String s : strings) {
@@ -120,7 +131,7 @@ class ABean {
     }
 
     public ABean() {
-        System.out.println("ABeab created");
+        System.out.println("ABean created");
     }
 
     public void setBComponent(BBean bComponent) {
@@ -132,9 +143,18 @@ class ABean {
     }
 }
 
+/**
+ * Example of a bean
+ */
 @Bean
 class BBean {
+
+    @Autowired
+    private String s = null;
+
+
     public boolean isPalindrome(String s) {
+        System.out.println("BBean.s = " + this.s); //this should not print '...null' since the field should be injected
         return s.equals(new StringBuilder(s).reverse().toString());
     }
 

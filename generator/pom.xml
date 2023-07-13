@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dk.logb.qr</groupId>
-	<artifactId>generator</artifactId>
+	<artifactId>qrgenerator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>generator</name>
 	<description>QR code generator</description>
