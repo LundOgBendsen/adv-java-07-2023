@@ -1,0 +1,9 @@
+-- V1__Create_Person_Table.sql
+CREATE TABLE person (
+    id INT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    birth_date DATE
+);
+--create a sequence
+CREATE SEQUENCE person_seq;
