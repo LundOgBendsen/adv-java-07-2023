@@ -18,6 +18,8 @@ public class Person {
     @Temporal(TemporalType.DATE)
     private LocalDate birthDate;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
     // Constructors, getters, setters, and other methods
 
     // Constructor
@@ -61,5 +63,13 @@ public class Person {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }
