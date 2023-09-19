@@ -48,6 +48,57 @@ public class PersonController {
         return amount + " persons created";
     }
 
+
+    @GetMapping(value = "/streets", produces = "text/plain" )
+    String getFemales() {
+        List<Person> allPersons = service.getAllPersons();
+        List<Integer> janes = allPersons
+                .stream().parallel()
+                .filter(person -> "Jane".equals(person.getFirstName()))
+                .map(p -> p.getAddress().getStreet())
+                .map(s -> s.length())
+
+                .collect(Collectors.toList());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+        String json;
+        try {
+            json = objectMapper.writeValueAsString(janes);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return json;
+
+
+
+    }
+
+
+    @GetMapping(value = "/ages", produces = "text/plain" )
+    String getAges() {
+        List<Person> allPersons = service.getAllPersons();
+        Map<String, Integer> map = allPersons.stream().parallel()
+                .collect(Collectors.toMap(this::getFullName, this::getAgeFromBirthDate));
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+        String json;
+        try {
+            json = objectMapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return json;
+    }
+
+
+    /*
     @GetMapping(value = "/ages", produces = "text/plain" )
     String getAges() {
         Stream<Person> stream = service.getAllPersons().stream();
@@ -146,6 +197,9 @@ public class PersonController {
         }
         return json;
     }
+
+
+     */
 
     String reverse(String s) {
         return new StringBuilder(s).reverse().toString();

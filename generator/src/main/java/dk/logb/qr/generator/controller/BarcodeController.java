@@ -3,7 +3,6 @@ package dk.logb.qr.generator.controller;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.oned.EAN13Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
@@ -15,10 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 
 @RestController
 @RequestMapping("/barcodes")
@@ -30,6 +26,7 @@ public class BarcodeController {
 
         return ResponseEntity.ok(generateQRCodeImage(barcode));
     }
+
 
     public static BufferedImage generateQRCodeImage(String barcodeText) throws Exception {
         QRCodeWriter barcodeWriter = new QRCodeWriter();

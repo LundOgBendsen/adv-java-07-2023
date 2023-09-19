@@ -15,5 +15,5 @@ public class FirstClass {
                 resultat += i;
         }
         return resultat;
-    }
+
 }
