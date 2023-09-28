@@ -9,6 +9,18 @@ import java.util.*;
 
 public class Words {
     public static void main(String[] args) throws IOException {
+
+        boolean b = safeRun(() -> throw new IOException());
+        //b==false;
+        boolean b = safeRun(() -> System.out.println("ok"));
+        //b==true
+
+        List<String> list = List.of("hej", "med444", "dig");
+        list.stream().filter(s -> s.contains("e")).map(s -> s.length()).forEach(s -> System.out.println(s));
+
+
+
+
         List<String> allWords = getAllWords("https://www.ietf.org/rfc/rfc2616.txt");
         System.out.println(allWords.size());
 
