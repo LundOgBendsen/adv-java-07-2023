@@ -10,10 +10,17 @@ import java.util.*;
 public class Words {
     public static void main(String[] args) throws IOException {
 
-        boolean b = safeRun(() -> throw new IOException());
-        //b==false;
-        boolean b = safeRun(() -> System.out.println("ok"));
-        //b==true
+        Optional<String> o = Optional.ofNullable(null);
+        System.out.println(o.isPresent());
+        o.ifPresent(s -> System.out.println(s));
+        String defaultr = o.orElse("default");
+        System.out.println(defaultr);
+
+        System.exit(0);
+
+
+
+
 
         List<String> list = List.of("hej", "med444", "dig");
         list.stream().filter(s -> s.contains("e")).map(s -> s.length()).forEach(s -> System.out.println(s));
